@@ -6,53 +6,42 @@ Pensate prima in italiano.
 Dividete in piccoli problemi la consegna.
 Individuate gli elementi di cui avete bisogno per realizzare il programma.
 Bonus:
-Invece di usare prompt e allerte usate inputs ed elementi della dom per mostrare a schermo il risultato.*/
+Invece di usare prompt e allerte usate inputs ed elementi della dom per mostrare a chermo il risultato.*/
 
-const elencoNumeriDom = document.getElementById("elencoNumeriDom");
-let numeriDaStampare = 5;
-let rangeMax = 10;
-let elencoNumeriDaIndovinare = [];
-let elencoNumeriIndovinati = [];
-var continuare = true;
 
-do {
-    for (i = 0; i < numeriDaStampare; i++) {
-       elencoNumeriDaIndovinare.push(generaNumeroRandom(1, rangeMax));
+let container = document.getElementById("container");
+let innerTimer = document.getElementById("timer");
+let randomArray = [];
+
+randomArrayGenerator(container, randomArray);
+
+let counter = 0;
+let timer = setInterval(
+    function() {
+        innerTimer.innerHTML = counter;
+        counter++;
+        if (counter === 11) {
+            counter = 0;
+            clearInterval(timer);
+            console.log("OK!")
+        }
+    }, 1000);
+
+
+
+
+//FUNZIONI
+//Generazione di un numero casuale
+function randomNumber (min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+//Generazione di un array di 5 numeri casuali
+function randomArrayGenerator (container, randomArray) {
+
+    while (randomArray.length < 5) {
+        randomArray.push(randomNumber(1, 100));
     }
-    document.getElementById("elencoNumeriDom").innerHTML = elencoNumeriDaIndovinare;
 
-    setTimeout(verifica,numeriDaStampare * 3000);
- } while (continuare != true) ;
- 
-
-
-
-
-function verifica() {
-    elencoNumeriDom.classList.add("d-none");
-   for (x = 0; x < numeriDaStampare; x++) {
-     let numeroPrompt = parseInt(prompt("Quali numeri ricordi?"));
-      if (elencoNumeriDaIndovinare.includes(numeroPrompt)){
-         elencoNumeriIndovinati.push(numeroPrompt);
-      }
-   }
-   document.getElementById("risultato").innerHTML = `Hai indovinato
-    ${elencoNumeriIndovinati.length} numeri(${elencoNumeriIndovinati})`;
-
-if (elencoNumeriIndovinati.length == elencoNumeriDaIndovinare.length) {
-    continuare = confirm("Vuoi continuare?");
-    if (continuare == true) {
-       numeriDaStampare++;
-       elencoNumeriDaIndovinare = [];
-       elencoNumeriIndovinati = [];
-       elencoNumeriDom.classList.remove("d-none");
-       document.getElementById("risultato").innerHTML = ``;
-    }
- } 
-} 
-
-
-function generaNumeroRandom(min, max) {
-   const numeroRandom = Math.floor( Math.random() * (max - min + 1) ) + min;
-   return numeroRandom;
+    return container.innerHTML = randomArray;
 }
